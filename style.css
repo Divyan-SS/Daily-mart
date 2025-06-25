@@ -1,0 +1,227 @@
+/* === Base Styles === */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f4f4;
+}
+
+main {
+  padding: 20px;
+}
+
+footer {
+  background-color: #eee;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* === Header === */
+header, .static-header {
+  background-color: #fff;
+  padding: 15px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 28px;
+  margin: 0;
+}
+
+.green {
+  color: #4CAF50;
+}
+
+.yellow {
+  color: #FFC107;
+}
+
+#search {
+  width: 500px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: all 0.3s ease;
+}
+
+#search::placeholder {
+  color: #999;
+}
+
+#search:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+/* === Header Buttons === */
+.header-right {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  min-width: 120px;
+}
+
+.login-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: #43a047;
+}
+
+.cart-btn {
+  background-color: #FFC107;
+  color: #000;
+}
+
+.cart-btn:hover {
+  background-color: #e0a800;
+}
+
+.login-btn span.daily {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+/* === Categories Grid === */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.category {
+  text-align: center;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.category:hover {
+  transform: scale(1.05);
+}
+
+.category img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* === Login Overlay === */
+.login-overlay {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0; left: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* === Login Modal Box === */
+.login-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.login-modal input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.login-modal input:invalid {
+  border-color: red;
+}
+
+.login-modal input:valid {
+  border-color: #4CAF50;
+}
+
+.login-modal button {
+  margin-top: 20px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.login-modal button:hover {
+  background-color: #388E3C;
+}
+
+/* === Checkout Section === */
+.checkout-section input,
+.checkout-section select {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+/* === Responsive Fixes === */
+@media screen and (max-width: 600px) {
+  #search {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .categories {
+    grid-template-columns: 1fr;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .checkout-section input,
+  .checkout-section select {
+    max-width: 100%;
+  }
+}

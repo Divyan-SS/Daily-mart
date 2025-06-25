@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart - Daily Mart</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .login-overlay {
+      height: 100vh;
+      width: 100%;
+      position: fixed;
+      top: 0; left: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .login-modal {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .login-modal input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .login-modal button {
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      font-size: 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1 class="logo"><span class="green">Daily</span><span class="yellow">Mart</span></h1>
+      <input type="text" id="search" placeholder="Search...">
+      <div class="header-right">
+        <a href="index.html"><button class="btn cart-btn">Home</button></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h2>🛒 Your Cart</h2>
+    <div id="cartItemsContainer"></div>
+    <h3>Total: ₹<span id="totalAmount">0</span></h3>
+
+    <div class="checkout-section">
+      <label>Address:</label>
+      <input type="text" id="deliveryAddress" placeholder="Enter delivery address">
+      <label>Payment Mode:</label>
+      <select id="deliveryMode">
+        <option value="cod">Cash on Delivery</option>
+        <option value="online">Online Payment</option>
+      </select>
+      <div id="checkoutButtons"></div>
+    </div>
+  </main>
+
+  <script>
+    const cartItemsContainer = document.getElementById("cartItemsContainer");
+    const totalAmountSpan = document.getElementById("totalAmount");
+    const checkoutButtons = document.getElementById("checkoutButtons");
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let total = 0;
+
+    function renderCart() {
+      cartItemsContainer.innerHTML = "";
+      total = 0;
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+
+      cart.forEach(item => {
+        total += item.price * item.quantity;
+
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <p><strong>${item.name}</strong> - ₹${item.price} x ${item.quantity} = ₹${item.price * item.quantity}</p>
+        `;
+        cartItemsContainer.appendChild(div);
+      });
+
+      totalAmountSpan.innerText = total;
+    }
+
+    function renderCheckoutButtons() {
+      checkoutButtons.innerHTML = "";
+
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+      const btn = document.createElement("button");
+      btn.textContent = isLoggedIn ? "Pay Now" : "Login to Pay";
+      btn.className = "btn login-btn";
+
+      btn.onclick = () => {
+        if (isLoggedIn) {
+          const address = document.getElementById("deliveryAddress").value;
+          if (!address.trim()) {
+            alert("Please enter your address.");
+            return;
+          }
+          alert("✅ Order placed successfully!");
+          localStorage.removeItem("cart");
+          location.href = "index.html";
+        } else {
+          showLoginModal();
+        }
+      };
+
+      checkoutButtons.appendChild(btn);
+    }
+
+    function showLoginModal() {
+      const modal = document.createElement("div");
+      modal.className = "login-overlay";
+      modal.innerHTML = `
+        <div class="login-modal">
+          <h2>Login to Continue</h2>
+          <input type="text" id="mobileLogin" placeholder="Enter 10-digit number" maxlength="10" />
+          <button id="loginBtn" disabled>Send OTP</button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      const input = modal.querySelector("#mobileLogin");
+      const loginBtn = modal.querySelector("#loginBtn");
+
+      input.addEventListener("input", () => {
+        loginBtn.disabled = !/^\d{10}$/.test(input.value);
+      });
+
+      loginBtn.onclick = () => {
+        localStorage.setItem("isLoggedIn", "true");
+        alert("Logged in successfully!");
+        modal.remove();
+        renderCheckoutButtons();
+      };
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderCart();
+      renderCheckoutButtons();
+    });
+  </script>
+</body>
+</html>

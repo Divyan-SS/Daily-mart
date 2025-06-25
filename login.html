@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login to Daily Mart</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="static-header">
+    <h1 class="logo">
+      <span class="green">Daily</span><span class="yellow">Mart</span>
+    </h1>
+  </header>
+
+  <div class="login-overlay">
+    <div class="login-modal">
+      <h2>Login via Phone</h2>
+      <input type="text" id="mobileInput" maxlength="10" placeholder="Enter 10-digit mobile number" />
+      <button id="submitBtn" class="btn hidden">Send OTP</button>
+      <p style="margin-top: 10px;">
+        <a href="index.html" style="color: #4CAF50;">← Back to Home</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const mobileInput = document.getElementById("mobileInput");
+    const submitBtn = document.getElementById("submitBtn");
+
+    mobileInput.addEventListener("input", () => {
+      const isValid = /^\d{10}$/.test(mobileInput.value);
+      submitBtn.classList.toggle("hidden", !isValid);
+      mobileInput.style.borderColor = isValid ? "#ccc" : "red";
+    });
+
+    submitBtn.onclick = () => {
+      alert("OTP sent! Logged in.");
+      localStorage.setItem("isLoggedIn", "true");
+      location.href = "index.html";
+    };
+  </script>
+</body>
+</html>

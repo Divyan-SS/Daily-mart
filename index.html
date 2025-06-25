@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Mart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+<header>
+  <div class="header-top">
+    <h1 class="logo"><span class="green">Daily</span><span class="yellow">Mart</span></h1>
+    <input type="text" id="search" placeholder="Search...">
+   <div class="header-right">
+        <a href="cart.html"><button class="btn cart-btn">Cart</button></a>
+        <a href="login.html"><button class="btn login-btn"><span class="daily"></span> Login</button></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <main>
+    <h2 style="text-align: center;">Shop by Category</h2>
+    <div class="categories">
+      <div class="category" onclick="goTo('groceries')"><img src="images/groceries.jpg"><p>Groceries</p></div>
+      <div class="category" onclick="goTo('dairy')"><img src="images/dairy.jpg"><p>Dairy Products</p></div>
+      <div class="category" onclick="goTo('electronics')"><img src="images/electr.jpg"><p>Electronics</p></div>
+      <div class="category" onclick="goTo('decor')"><img src="images/decor.jpg"><p>Home Decor</p></div>
+      <div class="category" onclick="goTo('fashion')"><img src="images/fash.jpg"><p>Fashion</p></div>
+      <div class="category" onclick="goTo('cleaning')"><img src="images/cleaning.jpg"><p>Cleaning</p></div>
+      <div class="category" onclick="goTo('fruits')"><img src="images/fruits.jpg"><p>Fruits & Vegetables</p></div>
+      <div class="category" onclick="goTo('kitchen')"><img src="images/kitchen.jpg"><p>Kitchen Essentials</p></div>
+      <div class="category" onclick="goTo('personal')"><img src="images/personal.jpg"><p>Personal Care</p></div>
+    </div>
+
+    <div class="subcategories" id="subcategoryContainer"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Daily Mart. All rights reserved.</p>
+  </footer>
+
+  <!-- JS Section -->
+  <script>
+    const dairyItems = [
+      { name: 'Milk', image: 'images/milk.jpg' },
+      { name: 'Ghee', image: 'images/ghee.jpg' },
+      { name: 'Cheese', image: 'images/cheese.jpg' }
+    ];
+
+    let cartTotal = 0;
+    let cartItems = {};
+
+    function goTo(category) {
+      const container = document.getElementById("subcategoryContainer");
+      container.innerHTML = "";
+
+      if (category === "dairy") {
+        dairyItems.forEach(item => {
+          const div = document.createElement("div");
+          div.className = "subcategory-card";
+          div.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+            <h4>${item.name}</h4>
+            <div class="counter">
+              <button onclick="updateCart('${item.name}', -1)">-</button>
+              <span id="count-${item.name}">0</span>
+              <button onclick="updateCart('${item.name}', 1)">+</button>
+            </div>
+          `;
+          container.appendChild(div);
+        });
+      }
+    }
+
+    function updateCart(item, change) {
+      if (!cartItems[item]) cartItems[item] = 0;
+      cartItems[item] += change;
+      if (cartItems[item] < 0) cartItems[item] = 0;
+      document.getElementById(`count-${item}`).innerText = cartItems[item];
+      updateCartTotal();
+    }
+
+    function updateCartTotal() {
+      cartTotal = Object.values(cartItems).reduce((sum, qty) => sum + qty * 50, 0);
+      document.getElementById("cartBtn").innerText = `Cart (₹${cartTotal})`;
+    }
+
+    const phrases = ["Search groceries...", "Search fashion...", "Search electronics..."];
+    let index = 0;
+    const search = document.getElementById("search");
+
+    function rotatePlaceholder() {
+      search.setAttribute("placeholder", phrases[index]);
+      index = (index + 1) % phrases.length;
+    }
+
+    setInterval(rotatePlaceholder, 3000);
+  </script>
+</body>
+</html>
